@@ -21,6 +21,9 @@
               <th>培养单位</th>
               <th>课程</th>
               <th>目前分数</th>
+              <% if student_logged_in? %>
+                <th>核心课</th>
+              <% end %>
 
             </tr>
             </thead>
@@ -34,6 +37,18 @@
                   <td><%= grade.user.department %></td>
                   <td><%= grade.course.name %></td>
                   <td><%= grade.grade %></td>
+
+                  <% if student_logged_in? %>
+
+                      <% if grade.is_core %>
+                          <td>是</td>
+                          <td><%= link_to "取消核心课",close_grade_url(grade), class: 'btn btn-xs btn-info'%></td>
+                      <% else %>
+                          <td>否</td>
+                          <td><%= link_to "设为核心课",open_grade_url(grade), class: 'btn btn-xs btn-info' %></td>
+                      <% end %>
+
+                  <% end %>
 
                   <% if teacher_logged_in? %>
                       <%= form_for grade, url: grade_url(id: grade.id, course_id: grade.course.id), method: :patch do |f| %>

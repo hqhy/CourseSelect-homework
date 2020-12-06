@@ -1,4 +1,4 @@
-# CourseSelect [![Build Status](https://travis-ci.org/PENGZhaoqing/CourseSelect.svg?branch=master)](https://travis-ci.org/PENGZhaoqing/CourseSelect)
+# CourseSelect
 
 ### [中文教程1](http://blog.csdn.net/ppp8300885/article/details/52594839) [中文教程2](http://blog.csdn.net/ppp8300885/article/details/52601560) [中文教程3](http://blog.csdn.net/ppp8300885/article/details/52669749) [Wiki](https://github.com/PENGZhaoqing/CourseSelect/wiki)
 
@@ -7,9 +7,9 @@
 
 适合新学者的入手的第一个项目 ([演示Demo戳这里](https://courseselect.herokuapp.com/ ))，入门者可以在这个样本系统上增加更多的功能:
 
-* 处理选课冲突、控制选课人数
-* 统计选课学分，学位课等
-* 增加选课的开放、关闭功能
+* ~~处理选课冲突、控制选课人数~~
+* ~~统计选课学分，学位课等~~
+* ~~增加选课的开放、关闭功能~~
 * 自定义管理员后台
 * 基于OAuth的授权登陆
 * Excel格式的数据导入
@@ -23,6 +23,9 @@
 * 老师动态增加，删除课程
 * 老师对课程下的学生添加、修改成绩
 * 权限控制：老师和学生只能看到自己相关课程信息
+* 处理选课冲突、控制选课人数**（new）**
+* 统计选课学分，学位课等**（new）**
+* 增加选课的开放、关闭功能**（new）**
 
 **如果觉得好，给项目点颗星吧～**
 
@@ -110,15 +113,16 @@ $ rails s
 本项目包含了部分的测试（integration/fixture/model test），测试文件位于/test目录下。一键运行所有测试使用`rake test`：
 
 ```
-PENG-MacBook-Pro:IMS_sample PENG-mac$ rake test
-Run options: --seed 15794
+sctest@DESKTOP-IM0BR13:~/CourseSelect$ rake test 2> /dev/null
+Run options: --seed 11062
 
 # Running:
-.........
 
-Finished in 1.202169s, 7.4865 runs/s, 16.6366 assertions/s.
+............................
 
-9 runs, 20 assertions, 0 failures, 0 errors, 0 skips
+Finished in 3.298965s, 8.4875 runs/s, 9.0938 assertions/s.
+28 runs, 30 assertions, 0 failures, 0 errors, 0 skips
+Coverage report generated for Minitest to /home/sctest/CourseSelect/coverage. 122 / 242 LOC (50.41%) covered.
 ```
 
 ### 模型测试
@@ -192,38 +196,12 @@ end
   end
   ```
 
-3. 运行`rake test`,成功后会根目录的coverage下生成一个index.html文件，用浏览器打开能看到结果如下：
-
-  <img src="/lib/screenshot5.png" width="700">  
-
-  <img src="/lib/screenshot6.png" width="700">  
+3. 运行`rake test`,成功后会根目录的coverage下生成一个index.html文件。
 
 
-## Travis CI 线上自动测试
+## Github Actions 线上自动测试
 
-上述为本地测试，我们可以使用Travis CI来实现自动测试，首先申请一个Travis CI的账号，然后与自己的github连接起来，接着在自己项目根目录中增加一个新的文件`.travis.yml`如下，这个文件中指定了测试需要的ruby版本，数据库等配置以及一些测试前的脚本操作，当你的github发生更新后，Travis CI会自动触发测试（需要你在Travis CI中自己设置自动/手动触发），然后读取你的`.travis.yml`文件配置进行测试，其实也就是把本地测试拉到服务器上进行，测试成功后会在你的github项目给一个buliding pass的标签（见CourseSelect题目旁边），代表当前的代码是通过测试的
-
-```
-language: ruby
-
-rvm:
-  - 2.2
-
-env:
-  - DB=pgsql
-
-services:
-  - postgresql
-
-script:
-  - RAILS_ENV=test bundle exec rake db:migrate --trace
-  - bundle exec rake db:test:prepare
-  - bundle exec rake
-
-before_script:
-  - cp config/database.yml.travis config/database.yml
-  - psql -c 'create database courseselect_test;' -U postgres
-```
+上述为本地测试，我们可以使用Github Actions来实现自动测试，相关代码位于`.github/workflows/test.yml`，由于是GitHub内置的功能，无需过多配置即可自动应用，每次在master分支提交修改均会自动测试。
 
 ## How to Contribute
 

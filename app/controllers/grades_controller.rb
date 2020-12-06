@@ -24,6 +24,19 @@ class GradesController < ApplicationController
     end
   end
 
+  def close
+    @grade = Grade.find_by_id(params[:id])
+    @grade.update_attributes(is_core: false)
+    @course = Course.find_by_id(@grade.course_id)
+    redirect_to grade_path, flash: {:success => "已取消该核心课:#{ @course.name}"}
+  end
+
+  def open
+    @grade = Grade.find_by_id(params[:id])
+    @grade.update_attributes(is_core: true)
+    @course = Course.find_by_id(@grade.course_id)
+    redirect_to grade_path, flash: {:success => "已设该课为核心课:#{ @course.name}"}
+  end
 
   private
 

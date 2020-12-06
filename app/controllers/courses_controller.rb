@@ -72,14 +72,23 @@ class CoursesController < ApplicationController
 
   def select
     @course=Course.find_by_id(params[:id])
-    current_user.courses<<@course
-    flash={:suceess => "成功选择课程: #{@course.name}"}
+    if @course.limit_num > @course.student_num
+      @course.update_attributes(student_num: @course.student_num + 1)
+      current_user.courses<<@course
+      flash={:suceess => "成功选择课程: #{@course.name}"}
+    else
+
+      flash={:danger => "fail to select: #{@course.name}" }
+    end
     redirect_to courses_path, flash: flash
   end
 
   def quit
     @course=Course.find_by_id(params[:id])
     current_user.courses.delete(@course)
+    if @course.student_num > 0
+      @course.update_attributes(student_num: @course.student_num - 1)
+    end
     flash={:success => "成功退选课程: #{@course.name}"}
     redirect_to courses_path, flash: flash
   end
@@ -89,7 +98,23 @@ class CoursesController < ApplicationController
 
   def index
     @course=current_user.teaching_courses.paginate(page: params[:page], per_page: 4) if teacher_logged_in?
-    @course=current_user.courses.paginate(page: params[:page], per_page: 4) if student_logged_in?
+    # @course=current_user.courses.paginate(page: params[:page], per_page: 4) if student_logged_in?
+    if student_logged_in?
+      credit = 0
+      core = 0
+      # @course=  current_user.courses
+      @course = Course.select("courses.id, name, course_code,course_type,teaching_type,exam_type,credit,limit_num,student_num,class_room,course_time,course_week,grades.is_core,teacher_id").joins(:grades).where("grades.user_id" => session[:user_id])
+      @course.each {|c|
+        num = c.credit.split('/')[1].to_f
+        credit += num
+        if c.is_core?
+          core += num
+        end
+      }
+      @result = [credit,core]
+      @course = @course.paginate(page: params[:page], per_page: 4)
+      [@result,@course]
+    end
   end
 
 

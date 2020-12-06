@@ -11,17 +11,30 @@
         <div class="panel-heading">
           <% if teacher_logged_in? %><h3 class="panel-title">授课列表</h3>
           <% end %>
-          <% if student_logged_in? %><h3 class="panel-title">已选课程</h3>
+          <% if student_logged_in? %><h3 class="panel-title">已选课程 </h3>
+              课程学分 : <%= @result[0] %>
+              核心课学分 : <%= @result[1] %>
           <% end %>
         </div>
 
         <div class="panel-body">
+          <!--<tr>
+            已选学分：
+            <% tot_cr=0.0 %>
+            <% @course.each do |course| %>
+            <%    tot_cr = tot_cr + course.credit.split('/')[1].to_f %>
+            <% end %>
+            <%= tot_cr %>
+          </tr>-->
           <table class="table table-responsive table-condensed table-hover">
             <thead>
             <tr>
               <th>课程编号</th>
               <th>课程名称</th>
               <th>课时/学分</th>
+              <% if student_logged_in? %>
+                  <th>核心课</th>
+              <% end %>
               <th>考试方式</th>
               <th>主讲教师</th>
             </tr>
@@ -33,6 +46,15 @@
                   <td><%= course.course_code %></td>
                   <td><%= course.name %></td>
                   <td><%= course.credit %></td>
+
+                  <% if student_logged_in? %>
+                      <% if course.is_core %>
+                          <td>是</td>
+                      <% else %>
+                          <td>否</td>
+                      <% end %>
+                  <% end %>
+
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
 

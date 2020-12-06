@@ -1,0 +1,74 @@
+name: test
+
+on:
+  repository_dispatch:
+  release:
+    types: published
+  push:
+    branches:
+      - master
+
+jobs:
+  run_test:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Initialization system environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo apt update
+        sudo apt upgrade -y
+        sudo apt install -y ruby-dev ruby-bundler build-essential postgresql libpq-dev zlib1g-dev nodejs ruby-railties
+        sudo service postgresql start
+        sudo -u postgres createuser -s "$(whoami)"
+        sudo -u postgres psql -c 'create database courseselect_development;'
+        sudo -u postgres psql -c 'create database courseselect_test;'
+    - name: Initialization ruby environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        bundle config set path 'vendor/bundle'
+        bundle install
+        rake db:migrate
+        rake db:seed
+    - name: Run test
+      run: |
+        rake test 2> /dev/null
+
+  test_deploy:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Initialization system environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo apt update
+        sudo apt upgrade -y
+        sudo apt install -y ruby-dev ruby-bundler build-essential postgresql libpq-dev zlib1g-dev nodejs ruby-railties
+        sudo service postgresql start
+        sudo -u postgres createuser -s "$(whoami)"
+        sudo -u postgres psql -c 'create database courseselect_development;'
+        sudo -u postgres psql -c 'create database courseselect_test;'
+    - name: Initialization ruby environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        bundle config set path 'vendor/bundle'
+        bundle install
+        rake db:migrate
+        rake db:seed
+    - name: Run rails server
+      run: |
+        rails server --daemon --port=3000
+    - name: Check if homepage work
+      run: |
+        sleep 30s
+        curl http://127.0.0.1:3000/

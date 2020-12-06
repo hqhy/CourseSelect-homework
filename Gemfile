@@ -1,31 +1,31 @@
-source 'https://gems.ruby-china.org'
+source 'https://gems.ruby-china.com'
 
-gem 'bootstrap-sass', '~> 3.3.7'
+gem 'bootstrap-sass'
 # Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.11'
-gem 'faker', '~> 1.6.3'
-gem 'rails_admin', '~> 0.8.1'
+gem 'bcrypt'
+gem 'faker'
+gem 'rails_admin'
 gem 'pry-rails'
 gem 'carrierwave'
 gem 'paperclip'
-gem 'will_paginate', '~> 3.1.6'
+gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'roo'
 gem 'roo-xls'
 gem 'paper_trail'
-gem 'rubyzip', '~> 1.1.0'
+gem 'rubyzip'
 gem 'axlsx', '2.1.0.pre'
 gem 'axlsx_rails'
 gem 'rails-i18n'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5.2'
+# Bundle edge Rails instead: gem 'rails', '~> 5.0.0'
+gem 'rails', '~> 5.0.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -34,16 +34,16 @@ gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'sdoc', group: :doc
 
 gem 'simplecov', :require => false, :group => :test
 
 # for postgresql
-gem 'pg', '~> 0.18.4'
+gem 'pg'
 
-# gem 'bcrypt', '~> 3.1.7'
+# gem 'bcrypt'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -59,7 +59,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'web-console'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
@@ -68,4 +68,4 @@ group :production do
   gem 'rails_12factor'
 end
 
-
+gem 'rails-controller-testing'

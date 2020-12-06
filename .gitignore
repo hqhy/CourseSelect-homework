@@ -16,3 +16,7 @@
 !/log/.keep
 /tmp
 /public/system/*
+/vendor/*
+/.vscode
+/.idea
+/coverage
