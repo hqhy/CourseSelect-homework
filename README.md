@@ -47,22 +47,45 @@
 * 使用[Rails_admin Gem](https://github.com/sferik/rails_admin)作为后台管理
 * 使用[Postgresql](http://postgresapp.com/)作为数据库
 
-使用前需要安装Bundler，Gem，Ruby，Rails等依赖环境。
+使用前需要安装Bundler，Ruby等依赖环境。
 
 请根据本地系统下载安装[postgresql](https://devcenter.heroku.com/articles/heroku-postgresql#local-setup)数据库，并运行`psql -h localhost`检查安装情况。
 
 
 ## 安装
 
-在终端（MacOS或Linux）中执行以下代码
+首先请确保本项目的所有依赖（postgresql、ruby-bundler还有一些必要的编译依赖）均已安装，如果您正在使用ubuntu 20.04，可以以管理员身份运行下面的命令
 
+```bash
+apt update
+apt upgrade -y
+apt install -y postgresql ruby-bundler ruby-dev build-essential libpq-dev zlib1g-dev nodejs ruby-railties
+service postgresql start
 ```
-$ git clone https://github.com/PENGZhaoqing/CourseSelect
-$ cd CourseSelect
-$ bundle install
-$ rake db:migrate
-$ rake db:seed
-$ rails s 
+
+另外，请确保当前用户拥有访问postgresql中`courseselect_development`和`courseselect_test`数据库的权限，如果您正在使用ubuntu 20.04，可以使用下面的命令配置数据库
+
+```bash
+sudo -u postgres createuser -s "$(whoami)" # 赋予当前用户访问数据库的权限
+sudo -u postgres psql -c 'create database courseselect_development;' # 创建courseselect_development数据库
+sudo -u postgres psql -c 'create database courseselect_test;' # 创建courseselect_test数据库
+```
+
+接下来克隆本项目并配置ruby虚拟环境
+
+```bash
+git clone --depth=1 https://github.com/hksdpc250/CourseSelect-homework.git
+cd CourseSelect-homework
+bundle config set path 'vendor/bundle'
+bundle install # 如果这一步失败，可能是由于bundler版本不匹配，删除Gemfile.lock再重试一般可以解决该问题
+```
+
+初始化数据库并运行服务器
+
+```bash
+rake db:migrate
+rake db:seed
+rails server
 ```
 
 在浏览器中输入`localhost:3000`访问主页
