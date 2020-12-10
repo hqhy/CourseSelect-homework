@@ -34,8 +34,10 @@
       </div>
 
       <div class="panel-footer">
-        <p>没有账号?
-          <%= link_to "注册", new_user_path %>
+        <p>
+          没有账号? <%= link_to "注册", new_user_path %>
+          &nbsp;&nbsp;&nbsp;
+          忘记密码?<%= link_to "发送邮件", sessions_forget_path %>
         </p>
       </div>
     </div>

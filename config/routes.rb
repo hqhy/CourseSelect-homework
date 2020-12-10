@@ -43,6 +43,11 @@ Rails.application.routes.draw do
   post 'sessions/login' => 'sessions#create'
   delete 'sessions/logout' => 'sessions#destroy'
 
+  get 'sessions/forget'           => 'sessions#forget'
+  post 'sessions/forget_password' => 'sessions#forget_password'
+  post 'sessions/check_login'     => 'sessions#check_login'
+  get 'sessions/bind_email'       => 'sessions#bind_email'
+  post 'sessions/check_email'     => 'sessions#check_email'
 
   # Example resource route with options:
   #   resources :products do
