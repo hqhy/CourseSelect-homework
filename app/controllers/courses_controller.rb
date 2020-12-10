@@ -117,7 +117,50 @@ class CoursesController < ApplicationController
     end
   end
 
+  def search
+    keyword = params[:search][:keyword].lstrip.rstrip
+    if student_logged_in?
+      credit = 0
+      core = 0
+      attr = "courses.id, name, course_code,course_type,teaching_type,exam_type,credit,limit_num,student_num,class_room,course_time,course_week,grades.is_core,teacher_id"
+      @course = Course.select(attr).joins(:grades).where("grades.user_id" => session[:user_id]).where('course_code like ? or name like ?', "%#{keyword}%", "%#{keyword}%")
+      @course.each {|c|
+        num = c.credit.split('/')[1].to_f
+        credit += num
+        if c.is_core?
+          core += num
+        end
+      }
+      @result = [credit,core]
+      [@result,@course]
+      render :index
+    elsif teacher_logged_in?
+      @course=current_user.teaching_courses
+      @course = @course.where('course_code like ? or name like ?', "%#{keyword}%", "%#{keyword}%")
+      render :index
+    else
+      redirect_to root_url, flash: {danger: '请登陆'}
+    end
+  end
 
+  def searchlist
+    keyword = params[:search][:keyword].lstrip.rstrip
+    if student_logged_in?
+      @course=Course.where(:open=>true).where('"courses"."course_code" like ? or "courses"."name" like ?',"%#{keyword}%","%#{keyword}%")
+      @course=@course-current_user.courses
+      @course = @course
+      tmp=[]
+      @course.each do |course|
+        if course.open==true
+          tmp<<course
+        end
+      end
+      @course=tmp
+      render :list
+    else
+      redirect_to root_url, flash: {danger: '请登陆'}
+    end
+  end
   private
 
   # Confirms a student logged-in user.

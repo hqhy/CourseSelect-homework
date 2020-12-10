@@ -38,38 +38,38 @@
             <tbody>
 
             <% @grades.each do |grade| %>
-                <tr>
-                  <td><%= grade.user.num %></td>
-                  <td><%= grade.user.name %></td>
-                  <td><%= grade.user.major %></td>
-                  <td><%= grade.user.department %></td>
-                  <td><%= grade.course.name %></td>
-                  <td><%= grade.grade %></td>
+              <tr>
+                <td><%= grade.num %></td>
+                <td><%= grade.name %></td>
+                <td><%= grade.major %></td>
+                <td><%= grade.department %></td>
+                <td><%= grade.names %></td>
+                <td><%= grade.grade %></td>
 
-                  <% if student_logged_in? %>
+                <% if student_logged_in? %>
 
-                      <% if grade.is_core %>
-                          <td>是</td>
-                          <td><%= link_to "取消核心课",close_grade_url(grade), class: 'btn btn-xs btn-info'%></td>
-                      <% else %>
-                          <td>否</td>
-                          <td><%= link_to "设为核心课",open_grade_url(grade), class: 'btn btn-xs btn-info' %></td>
-                      <% end %>
-
+                  <% if grade.is_core %>
+                    <td>是</td>
+                    <td><%= link_to "取消核心课",close_grade_url(grade), class: 'btn btn-xs btn-info'%></td>
+                  <% else %>
+                    <td>否</td>
+                    <td><%= link_to "设为核心课",open_grade_url(grade), class: 'btn btn-xs btn-info' %></td>
                   <% end %>
 
-                  <% if teacher_logged_in? %>
-                      <%= form_for grade, url: grade_url(id: grade.id, course_id: grade.course.id), method: :patch do |f| %>
-                          <td><%= f.text_field :grade %></td>
-                          <td><%= f.submit "提交", class: "btn btn-success btn-xs" %></td>
-                      <% end %>
-                  <% end %>
+                <% end %>
 
-                </tr>
+
+                <% if teacher_logged_in? %>
+                  <%= form_for grade, url: grade_url(id: grade.id, course_id: grade.course.id), method: :patch do |f| %>
+                    <td><%= f.text_field :grade %></td>
+                    <td><%= f.submit "提交", class: "btn btn-success btn-xs" %></td>
+                  <% end %>
+                <% end %>
+
+              </tr>
             <% end %>
             </tbody>
           </table>
-          <%= will_paginate @grades %>
         </div>
       </div>
     </div>

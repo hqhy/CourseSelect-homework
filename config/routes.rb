@@ -49,6 +49,12 @@ Rails.application.routes.draw do
   get 'sessions/bind_email'       => 'sessions#bind_email'
   post 'sessions/check_email'     => 'sessions#check_email'
 
+  post 'course/search'            => 'courses#search'
+  get 'course/search'             => 'courses#search'
+  get 'grade/search'              => 'grades#search'
+  post 'grade/search'             => 'grades#search'
+  get 'course/searchlist'               => 'courses#searchlist'
+
   # Example resource route with options:
   #   resources :products do
   #     member do

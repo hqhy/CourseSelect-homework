@@ -26,6 +26,14 @@
             <% end %>
             <%= tot_cr %>
           </tr>-->
+          <%= form_for(:search, url:course_search_path ,method: :get, html: {class: "form-inline my-2 my-lg-0",role: "search"}) do |f| %>
+            <div class="input-group">
+              <%= f.text_field :keyword, class: 'form-control', placeholder: "搜索" %>
+              <span class="input-group-btn">
+                  <button type="submit" class="btn btn-secondary">搜索</button>
+              </span>
+            </div><!-- /input-group -->
+          <% end %>
           <table class="table table-responsive table-condensed table-hover">
             <thead>
             <tr>
